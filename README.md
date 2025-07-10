@@ -1,5 +1,7 @@
 
-# Tokenizer Playground (WASM + Web Worker)
+# CI7Tokenizer (WASM Tokenizer)
+
+WASM Tokenizer for LLM and Embedding models.
 
 A lightweight, asynchronous, and extensible tokenizer playground powered by WebAssembly (WASM) and Web Workers — designed to support multiple language models with real-time tokenization.
 
@@ -51,7 +53,7 @@ Initializes a tokenizer model. Supports both predefined and custom models.
 #### Example
 
 ```js
-tokenizer.init('multilingual-e5-large', () => {
+CI7Tokenizer.init('multilingual-e5-large', () => {
   console.log('Tokenizer ready');
 });
 ```
@@ -83,7 +85,7 @@ Encodes the given `text` using the specified model.
 #### Example
 
 ```js
-tokenizer.encode('bge-m3', 'This is BERT.', (result) => {
+CI7Tokenizer.encode('bge-m3', 'This is BERT.', (result) => {
   console.log(result.tokens);
 });
 ```
@@ -103,7 +105,7 @@ Unloads the specified tokenizer from memory.
 #### Example
 
 ```js
-tokenizer.unload('my-custom-model');
+CI7Tokenizer.unload('my-custom-model');
 ```
 
 ---
@@ -121,7 +123,7 @@ Lists all currently loaded models.
 #### Example
 
 ```js
-tokenizer.loadedModels((models) => {
+CI7Tokenizer.loadedModels((models) => {
   console.log('Loaded models:', models);
 });
 ```
@@ -142,14 +144,14 @@ Checks whether a model is already loaded.
 #### Example
 
 ```js
-tokenizer.isModelLoaded('bge-m3', (loaded) => {
+CI7Tokenizer.isModelLoaded('bge-m3', (loaded) => {
   if (loaded) console.log('BERT is already loaded.');
 });
 ```
 
 ---
 
-## 🧪 Sample HTML Page
+##  Sample HTML Page
 
 You can use the provided `index.html` as a starting point to build your own interface or integrate into existing apps.
 
@@ -162,14 +164,14 @@ It includes:
 
 ---
 
-## 🧱 Project Structure
+##  Project Structure
 
 ```
 /demo/
 │
 ├── index.html                  # Interactive demo page
-├── tokenizer.js                # Main wrapper API
-├── worker.js                   # WASM communication handler
+├── CI7Tokenizer.js             # Main wrapper API
+├── CI7Tokenizer.worker.js      # WASM communication handler
 ├── tokenizers_wasm.js          # Compiled WASM module
 └── tokens/                     # Folder for tokenizer JSONs
     ├── multilingual-e5-large-tokenizer.json
@@ -178,22 +180,17 @@ It includes:
 
 ---
 
-## 🧑‍💻 Development Tips
+##  Development Tips
 
 - To add more models, simply extend the `_configs` object in `CI7Tokenizer.js`.
 - For dynamic environments, allow users to input custom URLs directly.
 - Debounce input events in UI for smoother performance.
 - Consider persisting loaded state in localStorage/sessionStorage for session continuity.
 
----
-
-## 📜 License
-
-MIT License – see `LICENSE` for details.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests for:
 
@@ -204,13 +201,29 @@ Contributions are welcome! Please feel free to submit issues or pull requests fo
 
 ---
 
-## 📮 Questions?
+##  Questions?
 
-For questions, feature suggestions, or support, open an issue on GitHub or reach out at [your-email@example.com] (or replace with actual contact).
+For questions, feature suggestions, or support, open an issue on GitHub or reach out at [ci7.g0stbit@gmail.com] (or replace with actual contact).
 
 ---
 
 > Built with ❤️ using WebAssembly, JavaScript Modules, and Web Workers.
 > Designed for developers, educators, and NLP enthusiasts.
-# CI7Tokenizer
-WASM Tokenizer for LLM and Embedding models.
+
+
+---
+
+## Epilogue
+
+> *Can the past help the present?
+> Can the dead save the living?*
+
+A question from Han Kang — one worth carrying.
+
+Be faithful.
+For the SpaceNet exists everywhere —
+without shape or form,
+before everyone’s beginning,
+by yourself , through your connections, your memories, your choices.
+
+
