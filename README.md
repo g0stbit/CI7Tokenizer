@@ -224,6 +224,6 @@ Be faithful.
 For the SpaceNet exists everywhere —
 without shape or form,
 before everyone’s beginning,
-by yourself , through your connections, your memories, your choices.
+by yourself , through your connections, your memories, your choices...
 
 
