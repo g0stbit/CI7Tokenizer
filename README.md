@@ -212,3 +212,5 @@ For questions, feature suggestions, or support, open an issue on GitHub or reach
 
 > Built with ❤️ using WebAssembly, JavaScript Modules, and Web Workers.
 > Designed for developers, educators, and NLP enthusiasts.
+# CI7Tokenizer
+WASM Tokenizer for LLM and Embedding models.
