@@ -13,6 +13,21 @@
     h1 {
       text-align: center;
     }
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      margin-top: -10px;
+      color: #666;
+    }
+    .links {
+      text-align: center;
+      margin: 10px 0;
+    }
+    .links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #0366d6;
+    }
     .section {
       border: 1px solid #ccc;
       padding: 15px;
@@ -57,17 +72,36 @@
       padding: 6px;
       font-size: 14px;
     }
+    .how-to {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
 <h1>Tokenizer Playground</h1>
+<div class="subtitle">Test different tokenizers interactively</div>
+
+<!-- Links Section -->
+<div class="links">
+  <a href="https://g0stbit.github.io/CI7Tokenizer/ " target="_blank">Live Demo</a> |
+  <a href="https://github.com/g0stbit/CI7Tokenizer " target="_blank">GitHub Repo</a> |
+  <a href="https://github.com/g0stbit/CI7Tokenizer/blob/main/README.md " target="_blank">README</a>
+</div>
 
 <div class="model-controls">
   <select id="predefinedModelSelect"></select>
   <input type="text" id="customModelName" placeholder="Custom Model Name">
   <input type="text" id="customModelUrl" placeholder="Tokenizer JSON URL">
   <button onclick="loadModel()">Load Model</button>
+</div>
+
+<!-- How to Use Section -->
+<div class="how-to">
+  🔍 Type text into the box below and see the tokenized output in real-time.
 </div>
 
 <div id="tokenizerSections"></div>
@@ -118,8 +152,6 @@ function loadModel() {
     }
   });
 }
-
-
 
 function createTokenizerUI(modelName) {
   const section = document.createElement('div');

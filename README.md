@@ -2,6 +2,11 @@ WASM Tokenizer for LLM and Embedding models.
 
 A lightweight, asynchronous, and extensible tokenizer playground powered by WebAssembly (WASM) and Web Workers — designed to support multiple language models with real-time tokenization.
 
+👉 [Live Demo](https://g0stbit.github.io/CI7Tokenizer/ ) – Try the interactive tokenizer playground in your browser!\
+📘 [README](https://github.com/g0stbit/CI7Tokenizer/blob/main/README.md ) – Read the project documentation.\
+📦 [GitHub Repo](https://github.com/g0stbit/CI7Tokenizer ) – View the source code and contribute.
+
+
 ## 🚀 Features
 
 - ✅ **WebAssembly-powered**: Fast tokenization using Rust-based WASM modules.
@@ -11,11 +16,6 @@ A lightweight, asynchronous, and extensible tokenizer playground powered by WebA
 - 💡 **Model reuse**: Avoid redundant loads — reuse already initialized tokenizers.
 - 📦 **Extensible design**: Add new models easily via JSON configs or direct URLs.
 - 🌐 **Client-side only**: No backend required — runs entirely in the browser.
-
-## 🌐 Demo
-
-👉 [Live Demo](https://g0stbit.github.io/CI7Tokenizer/demo/)
-Try it out in your browser to test different tokenizers interactively!
 
 ---
 
@@ -27,6 +27,10 @@ Add the following `<script>` tag to your HTML file:
 
 ```html
 <script src="CI7Tokenizer.js"></script>
+```
+or using CDN
+```html
+<script src="https://cdn.jsdelivr.net/gh/g0stbit/CI7Tokenizer@main/dist/CI7Tokenizer.min.js"></script>
 ```
 
 Make sure all dependencies (`CI7Tokenizer.worker.js`, `tokenizers_wasm.js`, tokenizer JSON files) are in the correct path.
