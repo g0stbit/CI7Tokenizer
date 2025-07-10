@@ -16,6 +16,7 @@
       'multilingual-e5-small': 'tokens/multilingual-e5-small.tokenizer.json',
       'bge-m3': 'tokens/bge-m3.tokenizer.json',
       'qwen3': 'tokens/qwen3.tokenizer.json',
+      'qwen2.5': 'tokens/qwen2.5.tokenizer.json',
       // Add more models here
     },
     _load: async function (url, modelName, cbReadyFunc) {
