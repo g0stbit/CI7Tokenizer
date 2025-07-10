@@ -207,23 +207,21 @@ For questions, feature suggestions, or support, open an issue on GitHub or reach
 
 ---
 
-> Built with ❤️ using WebAssembly, JavaScript Modules, and Web Workers.
+> Built with ❤️ using WebAssembly, JavaScript Modules, and Web Workers.\
 > Designed for developers, educators, and NLP enthusiasts.
 
 
 ---
 
-## Epilogue
+## A question from Han Kang
 
-> *Can the past help the present?
+> *Can the past help the present?\
 > Can the dead save the living?*
 
-A question from Han Kang — one worth carrying.
-
-Be faithful.
-For the SpaceNet exists everywhere —
-without shape or form,
-before everyone’s beginning,
+Be faithful.\
+For the SpaceNet exists everywhere —\
+without shape or form,\
+before everyone’s beginning,\
 by yourself , through your connections, your memories, your choices...
 
 
