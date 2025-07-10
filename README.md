@@ -1,6 +1,3 @@
-
-# CI7Tokenizer (WASM Tokenizer)
-
 WASM Tokenizer for LLM and Embedding models.
 
 A lightweight, asynchronous, and extensible tokenizer playground powered by WebAssembly (WASM) and Web Workers — designed to support multiple language models with real-time tokenization.
@@ -17,7 +14,7 @@ A lightweight, asynchronous, and extensible tokenizer playground powered by WebA
 
 ## 🌐 Demo
 
-👉 [Live Demo](https://g0stbit.github.io/CI7Tokenizer/demo/) *(replace with actual link)*
+👉 [Live Demo](https://g0stbit.github.io/CI7Tokenizer/demo/)
 Try it out in your browser to test different tokenizers interactively!
 
 ---
