@@ -1,0 +1,148 @@
+
+// <script src="https://assets.ci7.top/tokenizer/CI7Tokenizer.js"></script>
+// CI7Tokenizer.init('/tokens/multilingual-e5-large-CI7Tokenizer.json', readyFunc);
+// CI7Tokenizer.encode('TEXT', function(e){console.log(e);console.log('hahaha')})
+
+(function () {
+  window.CI7Tokenizer = {
+    worker: undefined,
+    _idCounter: 0,
+    _cbReadyFunc: {},
+    _cbEncodeFunc: {},
+    _cbLoadedModelsFunc: null,
+    _configs: {
+      'paraphrase-multilingual-MiniLM-L12-v2': 'tokens/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json',
+      'multilingual-e5-large': 'tokens/multilingual-e5-large.tokenizer.json',
+      'multilingual-e5-small': 'tokens/multilingual-e5-small.tokenizer.json',
+      'bge-m3': 'tokens/bge-m3.tokenizer.json',
+      'qwen3': 'tokens/qwen3.tokenizer.json',
+      // Add more models here
+    },
+    _load: async function (url, modelName, cbReadyFunc) {
+      fetch(url).then((response) => response.text())
+        .then((text) => {
+          if (cbReadyFunc) CI7Tokenizer._cbReadyFunc[modelName] = cbReadyFunc;
+          CI7Tokenizer.message(modelName, text, 'ready');
+        })
+        .catch((err) => {
+          console.error(`Failed to load config for ${modelName}:`, err);
+        });
+    },
+    encode: function (modelName, text, cbFunc) {
+      const id = CI7Tokenizer.message(modelName, text, 'encode');
+      if (cbFunc) CI7Tokenizer._cbEncodeFunc[id] = cbFunc;
+    },
+    _onmessage: function (event) {
+      const { type, result, modelName, id } = event.data;
+
+      if (type === 'ready') {
+        if (CI7Tokenizer._cbReadyFunc[modelName]) {
+          CI7Tokenizer._cbReadyFunc[modelName]();
+          delete CI7Tokenizer._cbReadyFunc[modelName];
+        }
+      } else if (type === 'encode') {
+        if (CI7Tokenizer._cbEncodeFunc[id]) {
+          CI7Tokenizer._cbEncodeFunc[id](result);
+          delete CI7Tokenizer._cbEncodeFunc[id];
+        }
+      } else if (type === 'unload') {
+        console.log(`✅ Tokenizer for ${modelName} has been unloaded`);
+      } else if (type === 'list_loaded_models') {
+        if (CI7Tokenizer._cbLoadedModelsFunc) {
+          CI7Tokenizer._cbLoadedModelsFunc(result);
+          delete CI7Tokenizer._cbLoadedModelsFunc;
+        }
+      } else if (type === 'is_model_loaded') {
+        if (CI7Tokenizer._cbIsModelLoaded) {
+          CI7Tokenizer._cbIsModelLoaded(result);
+          delete CI7Tokenizer._cbIsModelLoaded;
+        }
+      }
+    },
+    message: function (modelName, text, type = 'encode') {
+      const id = ++CI7Tokenizer._idCounter;
+      CI7Tokenizer.worker.postMessage({
+        id: id,
+        type: type,
+        modelName: modelName,
+        text: text
+      });
+      return id;
+    },
+    init: function (...args /*modelName, urlOrCbReady, cbReadyFunc*/) {
+      let modelName, url, cbReadyFunc;
+      args.forEach(function(arg){
+        if (typeof arg === 'function') {
+          cbReadyFunc = arg;
+          return;
+        }
+        if (typeof arg === 'string') {
+          if (modelName) url = arg;
+          else modelName = arg;
+          return;
+        }
+      })
+      if (modelName && !url) url = CI7Tokenizer._configs[modelName];
+      if (!url) throw new Error(`Model "${modelName}" not found in configs`);
+      if (!cbReadyFunc) throw new Error("Invalid arguments for CI7Tokenizer.init()");
+
+      if (!CI7Tokenizer.worker) {
+        CI7Tokenizer.worker = new Worker('./CI7Tokenizer.worker.js', { type: "module" });
+        CI7Tokenizer.worker.addEventListener("message", CI7Tokenizer._onmessage);
+      }
+
+      CI7Tokenizer._load(url, modelName, cbReadyFunc);
+    },
+
+    /**
+     * Unloads a tokenizer model from the worker
+     */
+    unload: function (modelName) {
+      if (!CI7Tokenizer.worker) return;
+      CI7Tokenizer.worker.postMessage({
+        type: 'unload',
+        modelName: modelName
+      });
+    },
+
+    /**
+     * Checks if a model is already loaded in the worker
+     */
+    isModelLoaded: function (modelName, callback) {
+      if (!CI7Tokenizer.worker) {
+        callback(false);
+        return;
+      }
+
+      const id = ++CI7Tokenizer._idCounter;
+
+      CI7Tokenizer.worker.postMessage({
+        id: id,
+        type: 'is_model_loaded',
+        modelName: modelName
+      });
+
+      CI7Tokenizer._cbIsModelLoaded = callback;
+    },
+
+    /**
+     * Lists all currently loaded models (i.e., initialized tokenizers in memory)
+     */
+    loadedModels: function (callback) {
+      if (!CI7Tokenizer.worker) {
+        console.warn('Worker not initialized');
+        return;
+      }
+
+      const id = ++CI7Tokenizer._idCounter;
+      CI7Tokenizer.worker.postMessage({
+        id: id,
+        type: 'list_loaded_models'
+      });
+
+      if (typeof callback === 'function') {
+        CI7Tokenizer._cbLoadedModelsFunc = callback;
+      }
+    }
+  };
+})();

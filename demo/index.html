@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tokenizer Playground</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+    }
+    .section {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 6px;
+    }
+    .section h2 {
+      margin-top: 0;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      font-size: 14px;
+      margin-top: 10px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    .model-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .model-controls input[type="text"] {
+      flex: 1;
+      padding: 6px;
+      font-size: 14px;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    select {
+      padding: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Tokenizer Playground</h1>
+
+<div class="model-controls">
+  <select id="predefinedModelSelect"></select>
+  <input type="text" id="customModelName" placeholder="Custom Model Name">
+  <input type="text" id="customModelUrl" placeholder="Tokenizer JSON URL">
+  <button onclick="loadModel()">Load Model</button>
+</div>
+
+<div id="tokenizerSections"></div>
+
+<!-- Load Tokenizer JS -->
+<script src="CI7Tokenizer.js"></script>
+<script>
+  // Populate dropdown with predefined models
+  const config = CI7Tokenizer._configs;
+  const select = document.getElementById('predefinedModelSelect');
+  Object.keys(config).forEach(model => {
+    const opt = document.createElement('option');
+    opt.value = model;
+    opt.textContent = model;
+    select.appendChild(opt);
+  });
+function loadModel() {
+  const selectedModel = select.value;
+  const customName = document.getElementById('customModelName').value.trim();
+  const customUrl = document.getElementById('customModelUrl').value.trim();
+
+  let modelName, url;
+
+  if (customName && customUrl) {
+    modelName = customName;
+    url = customUrl;
+  } else {
+    modelName = selectedModel;
+    url = null;
+  }
+
+  if (!modelName) {
+    alert("Please select or define a model name.");
+    return;
+  }
+
+  // Check if model is already loaded
+  CI7Tokenizer.isModelLoaded(modelName, (isLoaded) => {
+    if (isLoaded) {
+      console.log(`🔁 Reusing already loaded model: ${modelName}`);
+      createTokenizerUI(modelName);
+    } else {
+      // Load only if not already loaded
+      CI7Tokenizer.init(modelName, url || undefined, () => {
+        console.log(`✅ ${modelName} is ready`);
+        createTokenizerUI(modelName);
+      });
+    }
+  });
+}
+
+
+
+function createTokenizerUI(modelName) {
+  const section = document.createElement('div');
+  section.className = 'section';
+
+  const title = document.createElement('h2');
+  title.textContent = modelName;
+
+  const unloadBtn = document.createElement('button');
+  unloadBtn.textContent = 'Unload';
+  unloadBtn.style.marginLeft = '10px';
+  unloadBtn.onclick = () => {
+    CI7Tokenizer.unload(modelName);
+    document.getElementById('tokenizerSections').removeChild(section);
+  };
+
+  title.appendChild(unloadBtn);
+
+  const textarea = document.createElement('textarea');
+  textarea.placeholder = 'Type something to tokenize...';
+
+  const resultArea = document.createElement('pre');
+
+  textarea.addEventListener('input', () => {
+    const input = textarea.value;
+    CI7Tokenizer.encode(modelName, input, (tokens) => {
+      resultArea.textContent = JSON.stringify(tokens, null, 2);
+    });
+  });
+
+  section.appendChild(title);
+  section.appendChild(textarea);
+  section.appendChild(resultArea);
+
+  var parent = document.getElementById('tokenizerSections');
+  if (parent.firstChild) {
+    parent.insertBefore(section, parent.firstChild);
+  } else {
+     parent.appendChild(section);
+  }
+}
+
+</script>
+
+</body>
+</html>
